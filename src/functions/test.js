@@ -3,4 +3,4 @@ exports.handler = (event, context, callback) => {
         statusCode: 200,
         body: 'Lammy Lammy Gumdrop!'
     })
-}
+};
