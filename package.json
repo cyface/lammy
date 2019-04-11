@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "build-lammy": "netlify-lambda build src/functions",
     "serve-lammy": "netlify-lambda serve src/functions",
-    "build-works": "vue-cli-service build & netlify-lambda build src/functions"
+    "build-works": "vue-cli-service build && netlify-lambda build src/functions"
   },
   "dependencies": {
     "core-js": "^2.6.5",
