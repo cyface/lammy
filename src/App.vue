@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <img alt="Vue logo" src="./assets/logo.png">
+        <img alt="Lammy Logo" src="./assets/lambda.jpg">
         <HelloWorld msg="Lammy Time!"/>
     </div>
 </template>
