@@ -1,8 +1,6 @@
 <template>
     <div class="hello">
         <h1>{{ msg }}</h1>
-        Lammmyyy!
-
         <a href="/.netlify/functions/test">Netlify Function</a>
     </div>
 </template>
