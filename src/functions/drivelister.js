@@ -1,4 +1,3 @@
-const {google} = require('encoding');
 const {google} = require('googleapis');
 exports.handler = (event, context, callback) => {
     console.log("Drive Webhook Received");
