@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
+/dist/*
 !/dist/.githolder
-/dist
 
 # local env files
 .env.local
@@ -20,5 +20,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-/functions
+/functions/*
 !/functions/.githolder
