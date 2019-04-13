@@ -136,3 +136,4 @@ fabric.properties
 /functions/*
 !/functions/.githolder
 *credentials.json
+token.json

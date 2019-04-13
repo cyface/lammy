@@ -15,10 +15,10 @@ async function enableDriveWatching() {
 
     const drive = google.drive({version: 'v3', auth});
     const options = {
-        //  kind: 'api#channel',
+        kind: 'api#channel',
         id: '01234567-89ac-cdef-0123456789ac',
-        // resourceId: 'TimDevFolder',
-        //  resourceUri: 'https://drive.google.com/drive/u/0/folders/1esx3p7alBwcmLdjAmQzIeGenwKFlVH07',
+        resourceId: 'TimDevFolder',
+        resourceUri: 'https://drive.google.com/drive/u/0/folders/1esx3p7alBwcmLdjAmQzIeGenwKFlVH07',
         token: "tim",
         type: 'web_hook',
         address: 'https://lammy.cyface.com/.netlify/functions/drivecatcher',
@@ -26,7 +26,10 @@ async function enableDriveWatching() {
             ttl: 600
         }
     };
-    return drive.files.watch({fileId: '1YG6H-nU_qheSim0P5LU7MXvts-KfcdvrWQ1GlMINRAE', resource: options}, (err, res) => {
+    return drive.files.watch({
+        fileId: '1YG6H-nU_qheSim0P5LU7MXvts-KfcdvrWQ1GlMINRAE',
+        resource: options
+    }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
         console.log(res);
     });
@@ -34,7 +37,33 @@ async function enableDriveWatching() {
 
 }
 
-enableDriveWatching();
+//enableDriveWatching();
+
+async function listFiles() {
+    const auth = new google.auth.OAuth2();
+    auth.setCredentials(JSON.parse(process.env.GOOGLE_TOKEN));
+    return new Promise(function (resolve, reject) {
+        const drive = google.drive({version: 'v3', auth});
+        return drive.files.list({
+            pageSize: 50,
+            q: `'1esx3p7alBwcmLdjAmQzIeGenwKFlVH07' in parents`,
+            fields: 'files(id, name)'
+        }, (err, res) => {
+            if (err) return console.log('The API returned an error: ' + err);
+            const files = res.data.files;
+            if (files.length) {
+                resolve(files);
+                files.forEach((file, index) => {
+                    console.log(file);
+                });
+            } else {
+                reject(Error("Yikes, we didn't find anything"))
+            }
+        });
+    })
+}
+
+listFiles();
 
 // let config = {
 //         headers: {
