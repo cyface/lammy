@@ -10,6 +10,7 @@
     "build-works": "vue-cli-service build && netlify-lambda build src/functions"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
     "netlify-lambda": "^1.4.3",
     "vue": "^2.6.6"
