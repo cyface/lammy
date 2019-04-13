@@ -14,7 +14,6 @@ exports.handler = (event, context, callback) => {
         if (err) return console.log('The API returned an error: ' + err);
         const files = res.data.files;
         if (files.length) {
-            resolve(files);
             let fileList = "";
             files.forEach((file, index) => {
                 fileList += file;
