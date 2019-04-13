@@ -16,7 +16,7 @@ exports.handler = (event, context, callback) => {
         if (files.length) {
             let fileList = "";
             files.forEach((file, index) => {
-                fileList += file;
+                fileList += file.name;
             });
             callback(null, {
                 statusCode: 200,
