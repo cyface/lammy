@@ -1,7 +1,11 @@
 //const tokenManager = require('./googleTokenManager');
 //const axios = require('axios');
-const {google} = require('encoding');
 const {google} = require('googleapis');
+
+
+//@ TODO: https://developers.google.com/identity/protocols/OAuth2ServiceAccount
+
+// https://developers.google.com/drive/api/v3/reference/files/list
 
 async function enableDriveWatching() {
     const credentials = {
@@ -17,18 +21,21 @@ async function enableDriveWatching() {
     const drive = google.drive({version: 'v3', auth});
     const options = {
         kind: 'api#channel',
-        id: '01234567-89ac-cdef-0123456789ac',
+        id: '1Mts667GbGoLY_0C60lDEMFwXAr9GcUFJ',
         resourceId: 'TimDevFolder',
-        resourceUri: 'https://drive.google.com/drive/u/0/folders/1esx3p7alBwcmLdjAmQzIeGenwKFlVH07',
+        resourceUri: 'https://drive.google.com/drive/u/1/folders/1Mts667GbGoLY_0C60lDEMFwXAr9GcUFJ',
         token: "tim",
+        //expiration: 99999999,
         type: 'web_hook',
         address: 'https://lammy.cyface.com/.netlify/functions/drivecatcher',
+        //payload: true,
         params: {
             ttl: 600
         }
     };
+
     return drive.files.watch({
-        fileId: '1YG6H-nU_qheSim0P5LU7MXvts-KfcdvrWQ1GlMINRAE',
+        fileId: '1Mts667GbGoLY_0C60lDEMFwXAr9GcUFJ',
         resource: options
     }, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
@@ -41,13 +48,23 @@ async function enableDriveWatching() {
 //enableDriveWatching();
 
 async function listFiles() {
-    const auth = new google.auth.OAuth2();
-    auth.setCredentials(JSON.parse(process.env.GOOGLE_TOKEN));
+    //const auth = new google.auth.OAuth2();
+    //auth.setCredentials(JSON.parse(process.env.GOOGLE_TOKEN));
+    const credentials = {
+        client_email: process.env.GOOGLE_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')  //Stupid env variable escaping
+    };
+    var delegated_credentials = credentials.with_subject('tim@cyface.com');
+    const auth = await google.auth.getClient({
+        credentials: delegated_credentials,
+        // Scopes can be specified either as an array or as a single, space-delimited string.
+        scopes: ['https://www.googleapis.com/auth/drive']
+    });
     return new Promise(function (resolve, reject) {
         const drive = google.drive({version: 'v3', auth});
         return drive.files.list({
             pageSize: 50,
-            q: `'1esx3p7alBwcmLdjAmQzIeGenwKFlVH07' in parents`,
+            //q: `'1Mts667GbGoLY_0C60lDEMFwXAr9GcUFJ' in parents`,
             fields: 'files(id, name)'
         }, (err, res) => {
             if (err) return console.log('The API returned an error: ' + err);
