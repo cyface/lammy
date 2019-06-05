@@ -54,11 +54,15 @@ async function listFiles() {
         client_email: process.env.GOOGLE_CLIENT_EMAIL,
         private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')  //Stupid env variable escaping
     };
-    var delegated_credentials = credentials.with_subject('tim@cyface.com');
+    const jwtOptions = {
+        subject: 'tim@cyface.com'
+    };
     const auth = await google.auth.getClient({
-        credentials: delegated_credentials,
+        credentials: credentials,
         // Scopes can be specified either as an array or as a single, space-delimited string.
-        scopes: ['https://www.googleapis.com/auth/drive']
+        scopes: ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/admin.directory.user'],
+        clientOptions: jwtOptions
+
     });
     return new Promise(function (resolve, reject) {
         const drive = google.drive({version: 'v3', auth});
